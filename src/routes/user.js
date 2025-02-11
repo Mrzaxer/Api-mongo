@@ -4,22 +4,22 @@ const User = require('../models/user');
 
 // 📌 Ruta para registrar un nuevo usuario
 router.post('/register', async (req, res) => {
-  const { departamento, phone, password, role } = req.body;
+  const { nombre, email, phone, password, role, direccion } = req.body;
 
   // Validación de datos
-  if (!departamento || !phone || !password || !role) {
+  if (!nombre || !email || !phone || !password || !role || !direccion) {
     return res.status(400).json({ message: 'Todos los campos son obligatorios' });
   }
 
   try {
-    // Verificar si el usuario ya existe
-    const existingUser = await User.findOne({ phone });
+    // Verificar si el usuario ya existe por teléfono o correo electrónico
+    const existingUser = await User.findOne({ $or: [{ phone }, { email }] });
     if (existingUser) {
-      return res.status(400).json({ message: 'El número de teléfono ya está registrado' });
+      return res.status(400).json({ message: 'El número de teléfono o el correo electrónico ya están registrados' });
     }
 
     // Crear nuevo usuario
-    const newUser = new User({ departamento, phone, password, role });
+    const newUser = new User({ nombre, email, phone, password, role, direccion });
     await newUser.save();
 
     res.status(201).json({ message: 'Usuario registrado exitosamente', user: newUser });
@@ -53,7 +53,7 @@ router.post('/login', async (req, res) => {
     res.status(200).json({
       message: 'Inicio de sesión exitoso',
       role: user.role,
-      departamento: user.departamento
+      departamento: user.direccion // Cambié `departamento` por `direccion` ya que ese es el campo definido en tu modelo
     });
 
   } catch (err) {

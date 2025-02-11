@@ -2,10 +2,17 @@
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
-  departamento: {
+  nombre: {
     type: String,
     required: true,
-  },  
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    lowercase: true,
+    trim: true,
+  },
   phone: {
     type: Number,
     required: true,
@@ -14,11 +21,14 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
-    
   },
   role: {
     type: String,
     enum: ['admin', 'inquilino'], 
+    required: true,
+  },
+  direccion: {
+    type: String,
     required: true,
   },
 });
