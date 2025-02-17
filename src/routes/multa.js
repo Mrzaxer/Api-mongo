@@ -1,10 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const Multa = require('../models/multa'); 
-const Notificacion = require('../models/notificacion'); // Importamos el modelo de notificación
+const Notificacion = require('../models/notificacion'); 
+const authMiddleware = require('../middleware/authMiddleware'); // Importar middleware de autenticación
 
-// Ruta para crear una nueva multa
-router.post('/no', async (req, res) => {
+// Crear una nueva multa y enviar notificación (PROTEGIDA)
+router.post('/no', authMiddleware, async (req, res) => {
   try {
     const { direccion, motivo, monto, estado } = req.body;
 
@@ -36,10 +37,12 @@ router.post('/no', async (req, res) => {
     res.status(500).json({ message: 'Error al crear la multa', error: err.message });
   }
 });
-router.get('/si', async (req, res) => {
+
+// Obtener todas las multas (PROTEGIDA)
+router.get('/si', authMiddleware, async (req, res) => {
   try {
-    const multas = await Multa.find(); // Obtener todas las multas desde la base de datos
-    res.status(200).json(multas); // Responder con la lista de multas
+    const multas = await Multa.find(); 
+    res.status(200).json(multas); 
   } catch (err) {
     res.status(500).json({ message: 'Error al obtener las multas', error: err.message });
   }

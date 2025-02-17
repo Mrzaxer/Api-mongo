@@ -1,5 +1,3 @@
-//
-
 const mongoose = require('mongoose');
 
 // Definir el esquema para las multas
