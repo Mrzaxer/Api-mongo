@@ -11,11 +11,22 @@ const cookieParser = require('cookie-parser');
 
 const app = express();
 
-// Configuración de CORS para permitir solicitudes desde tu frontend de Vercel
+const allowedOrigins = [
+  'https://condominio-jona-xe66.vercel.app', // Producción
+  'http://localhost:5173'                   // Desarrollo local
+];
+
 const corsOptions = {
-  origin: 'https://condominio-jona-xe66.vercel.app', 
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('No permitido por CORS'));
+    }
+  },
   credentials: true,
 };
+
 
 
 // Conectar a la base de datos
