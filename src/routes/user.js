@@ -99,7 +99,6 @@ router.post('/token', async (req, res) => {
   }
 
   try {
-    // Verificar si el refresh token está en la base de datos
     const storedToken = await RefreshToken.findOne({ token: refreshToken });
     if (!storedToken) {
       return res.status(403).json({ message: 'Refresh Token inválido' });
@@ -123,6 +122,24 @@ router.post('/token', async (req, res) => {
     res.status(500).json({ message: 'Error en el servidor', error: err.message });
   }
 });
+
+// Ruta para verificar token (nueva)
+router.get('/verify', authenticateToken, (req, res) => {
+  try {
+    // Si el middleware authenticateToken pasó, el token es válido
+    res.status(200).json({ 
+      valid: true,
+      user: {
+        userId: req.user.userId,
+        role: req.user.role,
+        direccion: req.user.direccion
+      }
+    });
+  } catch (err) {
+    res.status(500).json({ message: 'Error al verificar token', error: err.message });
+  }
+});
+
 
 // Ruta protegida (solo accesible con Access Token válido)
 router.get('/usuarios', async (req, res) => {

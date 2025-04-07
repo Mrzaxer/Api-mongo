@@ -6,13 +6,14 @@ const authMiddleware = require('./src/middleware/authMiddleware');  // Middlewar
 const userRoutes = require('./src/routes/user');
 const multaRoutes = require('./src/routes/multa');
 const notificacionRoutes = require('./src/routes/notificacion');
+const authRoutes = require('./src/routes/auth');  // Asegúrate de que esta ruta esté definida
 const cookieParser = require('cookie-parser');
 
 const app = express();
 
 // Configuración de CORS para permitir solicitudes con credenciales
 const corsOptions = {
-  origin: 'http://localhost:5173',  // El origen de tu frontend
+  origin: 'https://api-mongo-5hdo.onrender.com',  // El origen de tu frontend
   credentials: true,  // Permitir el uso de cookies/credenciales
 };
 
@@ -29,7 +30,8 @@ app.use('/api/users', userRoutes);
 
 // Rutas protegidas con JWT
 app.use('/api/multas', authMiddleware, multaRoutes);  
-app.use('/api/notificaciones', authMiddleware, notificacionRoutes);  
+app.use('/api/notificaciones', authMiddleware, notificacionRoutes);
+app.use('/api/auth', authRoutes);  // Ruta para autenticación
 
 // Puerto del servidor
 const PORT = process.env.PORT || 5000;

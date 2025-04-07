@@ -6,7 +6,7 @@ const router = express.Router();
 const SECRET_KEY = 'tu_clave_secreta_super_segura';  // ⚠️ Usa variables de entorno
 const REFRESH_SECRET_KEY = 'tu_refresh_token_super_seguro'; // ⚠️ Usa variables de entorno
 
-// 📌 Ruta para iniciar sesión (modificada para incluir refreshToken)
+// Ruta para iniciar sesión (modificada para incluir refreshToken)
 router.post('/login', async (req, res) => {
   const { phone, password } = req.body;
 
@@ -43,7 +43,7 @@ router.post('/login', async (req, res) => {
     // Guardar el refreshToken en una cookie segura
     res.cookie('refreshToken', refreshToken, {
       httpOnly: true,
-      secure: true, // ⚠️ Activar en producción con HTTPS
+      secure: true, 
       sameSite: 'Strict',
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 días
     });
