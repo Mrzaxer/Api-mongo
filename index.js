@@ -11,11 +11,12 @@ const cookieParser = require('cookie-parser');
 
 const app = express();
 
-// Configuración de CORS para permitir solicitudes con credenciales
+// Configuración de CORS para permitir solicitudes desde tu frontend de Vercel
 const corsOptions = {
-  origin: 'https://api-mongo-5hdo.onrender.com',  // El origen de tu frontend
-  credentials: true,  // Permitir el uso de cookies/credenciales
+  origin: 'https://condominio-jona-xe66.vercel.app', 
+  credentials: true,
 };
+
 
 // Conectar a la base de datos
 connectDB();
